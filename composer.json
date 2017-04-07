@@ -1,0 +1,22 @@
+{
+  "name": "lrpatricio/warlock",
+  "type": "library",
+  "description": "Utilitários para PHP, biblioteca desenvolvida para faciliar o desenvolvimento em PHP.",
+  "keywords": ["framework", "php", "utilitarios", "mask", "number", "request", ""],
+  "homepage": "http://www.lrpatricio.com/",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Leonardo Patricio",
+      "email": "me@lrpatricio.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3"
+  },
+  "autoload": {
+    "psr-0": {
+      "Warlock": "src/"
+    }
+  }
+}
