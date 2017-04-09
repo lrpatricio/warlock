@@ -20,6 +20,11 @@ class Mask
         return static::custom($val, "##.###.###/####-##");
     }
 
+    public static function cep($val)
+    {
+        return static::custom($val, "##.###-###");
+    }
+
     public static function custom($val, $mask)
     {
         $maskared = '';

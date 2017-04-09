@@ -12,6 +12,15 @@ namespace Warlock\Utils;
 class Strings
 {
     /**
+     * @param $var
+     * @return bool
+     */
+    public static function is($var)
+    {
+        return is_string($var);
+    }
+
+    /**
      * @param string $data
      * @return string
      */
@@ -196,6 +205,25 @@ class Strings
     public static function trim($string, $charlist = " \t\n\r\0\x0B")
     {
         return trim($string, $charlist);
+    }
+
+    /**
+     * @param string $str
+     * @param bool|null $allowable_tags
+     * @return string
+     */
+    public static function strip_tags($string, $allowable_tags = null)
+    {
+        return strip_tags($string, $allowable_tags);
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function addslashes($string)
+    {
+        return addslashes($string);
     }
 
     /**
