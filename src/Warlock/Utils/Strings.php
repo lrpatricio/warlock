@@ -11,6 +11,9 @@ namespace Warlock\Utils;
 
 class Strings
 {
+    public static $rmName = array("#", " ", "?", "-", "à", "á", "â", "ã", "ä", "å", "ç", "è", "é", "ê", "ë", "ì", "í", "î", "ï", "ñ", "ò", "ó", "ô", "õ", "ö", "ù", "ü", "ú", "ÿ", "À", "Á", "Â", "Ã", "Ä", "Å", "Ç", "È", "É", "Ê", "Ë", "Ì", "Í", "Î", "Ï", "Ñ", "Ò", "Ó", "Ô", "Õ", "Ö", "O", "Ù", "Ü", "Ú", "Ÿ", "-", "(", ")", "+");
+    public static $rmNameNew = array("", "_", "", "", "a", "a", "a", "a", "a", "a", "c", "e", "e", "e", "e", "i", "i", "i", "i", "n", "o", "o", "o", "o", "o", "u", "u", "u", "y", "A", "A", "A", "A", "A", "A", "C", "E", "E", "E", "E", "I", "I", "I", "I", "N", "O", "O", "O", "O", "O", "O", "U", "U", "U", "Y", "Y", "_", "", "", "_");
+
     /**
      * @param $var
      * @return bool
@@ -18,6 +21,15 @@ class Strings
     public static function is($var)
     {
         return is_string($var);
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function replace_special_chars($string)
+    {
+        return str_replace(self::$rmName, self::$rmNameNew, $string);
     }
 
     /**
@@ -225,6 +237,12 @@ class Strings
     {
         return addslashes($string);
     }
+
+    public static function repeat($input, $multiplier)
+    {
+        return str_repeat($input, $multiplier);
+    }
+
 
     /**
      * @param string $string

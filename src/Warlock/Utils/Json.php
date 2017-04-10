@@ -97,6 +97,96 @@ class Json
     }
 
     /**
+     * Exibir um json formatado na tela
+     * @param $json
+     * @return bool|string
+     */
+    public static function show($json)
+    {
+        $tab = "  ";
+        $new_json = "";
+        $indent_level = 0;
+        $in_string = false;
+
+        $json_obj = self::decode($json);
+
+        if ($json_obj === false)
+        {
+            return false;
+        }
+
+        $len = Strings::length($json);
+
+        for ($c = 0; $c < $len; $c++)
+        {
+            $char = Strings::substring($json, $c, 1);
+            switch ($char)
+            {
+                case '{':
+                case '[':
+                    if (!$in_string)
+                    {
+                        $new_json .= $char."\n".Strings::repeat($tab, $indent_level + 1);
+                        $indent_level++;
+                    }
+                    else
+                    {
+                        $new_json .= $char;
+                    }
+                    break;
+
+                case '}':
+                case ']':
+                    if (!$in_string)
+                    {
+                        $new_json .= "\n".Strings::repeat($tab, $indent_level).$char;
+                        $indent_level--;
+                    }
+                    else
+                    {
+                        $new_json .= $char;
+                    }
+                    break;
+
+                case ',':
+                    if (!$in_string)
+                    {
+                        $new_json .= ",\n".Strings::repeat($tab, $indent_level);
+                    }
+                    else
+                    {
+                        $new_json .= $char;
+                    }
+                    break;
+
+                case ':':
+                    if (!$in_string)
+                    {
+                        $new_json .= ": ";
+                    }
+                    else
+                    {
+                        $new_json .= $char;
+                    }
+                    break;
+
+                case '"':
+                    if ($c > 0 && $json[$c - 1] != '\\')
+                    {
+                        $in_string = !$in_string;
+                    }
+                    break;
+
+                default:
+                    $new_json .= $char;
+                    break;
+            }
+        }
+
+        return "<pre>".$new_json."</pre>";
+    }
+
+    /**
      * Resposta via JSON
      * @param $source
      */

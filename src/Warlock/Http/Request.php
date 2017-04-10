@@ -2,7 +2,9 @@
 
 namespace library\backstage\utils;
 
+use Warlock\Utils\Directory;
 use Warlock\Utils\Json;
+use Warlock\Utils\Strings;
 
 class Request
 {
@@ -15,37 +17,65 @@ class Request
 
     public static function is($type)
     {
-        return strtolower($_SERVER['REQUEST_METHOD']) === strtolower($type);
+        return Strings::lowercase($_SERVER['REQUEST_METHOD']) === Strings::lowercase($type);
     }
 
-    public static function getProjectUrl($base = "")
+    private static function is_https()
+    {
+        return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+    }
+
+    public static function returnProtocol()
+    {
+        if(self::is_https())
+        {
+            return "http://";
+        }
+        else
+        {
+            return "https://";
+        }
+    }
+
+    public static function is_ajax()
+    {
+        $retorno = false;
+
+        if(Strings::first_pos(Strings::lowercase(Strings::replace("www.", "", $_SERVER['HTTP_REFERER'])), Strings::lowercase(Strings::replace("www.", "", self::base_url()))) !== false)
+        {
+            $retorno = true;
+        }
+
+        return $retorno;
+    }
+
+    public static function get_project_url($base = "")
     {
         $doc_root = $_SERVER["DOCUMENT_ROOT"];
 
-        if (substr($doc_root, -1) == "/")
+        if (Strings::substring($doc_root, -1) == "/")
         {
-            $doc_root = substr($doc_root, 0, strlen($doc_root) - 1);
+            $doc_root = Strings::substring($doc_root, 0, Strings::length($doc_root) - 1);
         }
 
-        $string = dirname(__DIR__);
+        $string = Directory::get_name(__DIR__);
 
         if (PHP_OS == "WINNT")
         {
-            $string = str_replace("\\", DIRECTORY_SEPARATOR, dirname(__DIR__));
+            $string = Strings::replace("\\", DIRECTORY_SEPARATOR, Directory::get_name(__DIR__));
         }
 
-        $base = str_ireplace($doc_root, "", $string);
-        $base = str_ireplace('vendor/backstage', '', $base);
+        $base = Strings::ireplace($doc_root, "", $string);
 
-        if (substr($base, 0, 1) == "\\")
+        if (Strings::substring($base, 0, 1) == "\\")
         {
-            $base = "/".substr($base, 1);
+            $base = "/".Strings::substring($base, 1);
         }
 
         return $base;
     }
 
-    public static function baseUrl()
+    public static function base_url()
     {
         if (php_sapi_name() == 'cli')
         {
@@ -54,9 +84,9 @@ class Request
 
         return sprintf(
             "%s://%s%s",
-            isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+            self::is_https() ? 'https' : 'http',
             $_SERVER['SERVER_NAME'],
-            self::getProjectUrl()
+            self::get_project_url()
         );
     }
 
@@ -136,24 +166,24 @@ class Request
      */
     public static function redirect($to = '/', $with = array())
     {
-        $redirectUrl = self::getRedirectUrl($to, $with);
+        $redirectUrl = self::get_redirect_url($to, $with);
         $currentUrl = self::getRequestUrl();
 
-        if (!self::isSameUrl($currentUrl, $redirectUrl))
+        if (!self::is_same_url($currentUrl, $redirectUrl))
         {
             header('Location: '.$redirectUrl);
         }
         die();
     }
 
-    public static function getRedirectUrl($to, $with = array())
+    public static function get_redirect_url($to, $with = array())
     {
         $queryString = empty($with) ? '' : ('?'.http_build_query($with));
-        $redirectUrl = self::baseUrl().$to.$queryString;
+        $redirectUrl = self::base_url().$to.$queryString;
         return $redirectUrl;
     }
 
-    public static function isSameUrl($a, $b)
+    public static function is_same_url($a, $b)
     {
         return $a == $b;
     }

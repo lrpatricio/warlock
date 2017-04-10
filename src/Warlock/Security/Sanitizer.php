@@ -51,7 +51,7 @@ class Sanitizer
 
     public static function xss(&$input)
     {
-        $input = Html::htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+        $input = Html::specialchars($input, ENT_QUOTES, 'UTF-8');
     }
 
     private static function proccess(&$input)
