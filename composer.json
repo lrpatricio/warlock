@@ -2,7 +2,7 @@
   "name": "lrpatricio/warlock",
   "type": "library",
   "description": "Utilitários para PHP, biblioteca desenvolvida para faciliar o desenvolvimento em PHP.",
-  "keywords": ["framework", "php", "utilitarios", "mask", "number", "request", ""],
+  "keywords": ["library", "php", "utilitarios", "mask", "number", "request", "security", "seguranca", "biblioteca"],
   "homepage": "http://www.lrpatricio.com/",
   "license": "proprietary",
   "authors": [
