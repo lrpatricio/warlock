@@ -161,6 +161,22 @@ class Strings
     }
 
     /**
+     * @param $string
+     * @param string $delimiter
+     * @return string
+     */
+    public static function camelcase($string, $delimiter = "-")
+    {
+        while(strpos($string, $delimiter) !== false)
+        {
+            $pos = strpos($string, $delimiter, 0);
+            $string = substr($string, 0, $pos).ucfirst(substr($string, $pos + 1));
+        }
+
+        return $string;
+    }
+
+    /**
      * @param string $string
      * @return string
      */
